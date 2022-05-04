@@ -4,19 +4,28 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Data;
+import net.sparkminds.user.entity.enumeration.CategoryStatus;
+
 @Entity
 @Table(name = "category")
+@Data
 public class Category extends Base {
 
 	@Column(unique = true)
 	private String name;
 	
+	@Column(name = "description")
 	private String description;
 	
-	private String status;
+	@Column(name = "status")
+	@Enumerated(EnumType.STRING)
+	private CategoryStatus status;
 	
 	@OneToMany(mappedBy = "category")
 	private List<Image> images;
@@ -37,11 +46,11 @@ public class Category extends Base {
 		this.description = description;
 	}
 
-	public String getStatus() {
+	public CategoryStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(CategoryStatus status) {
 		this.status = status;
 	}
 

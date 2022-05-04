@@ -3,6 +3,8 @@ package net.sparkminds.user;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import net.sparkminds.user.entity.Category;
+
 
 @SpringBootApplication
 public class ExampleApplication {

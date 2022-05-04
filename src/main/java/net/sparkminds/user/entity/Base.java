@@ -2,6 +2,7 @@ package net.sparkminds.user.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,12 +17,16 @@ public abstract class Base {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
+	@Column(name = "created_by")
 	private String createdBy;
 
+	@Column(name = "created_date")
 	private Date createdDate;
 
+	@Column(name = "last_modified_by")
 	private String lastModifiedBy;
 
+	@Column(name = "last_modified_date")
 	private Date lastModifiedDate;
 
 	public String getCreatedBy() {

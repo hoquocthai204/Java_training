@@ -1,49 +1,51 @@
 package net.sparkminds.user.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import common.APIResponse;
 import net.sparkminds.user.dto.CategoryRequestDTO;
-import net.sparkminds.user.reponsitory.CategoryRepository;
+import net.sparkminds.user.entity.Category;
 import net.sparkminds.user.service.CategoryService;
 
 @RestController
+@RequestMapping("/api/categories")
 public class CategoryController {
-
-	@Autowired
-	CategoryRepository categoryRepository;
-
-	@Autowired
-	CategoryService categoryService;
-
-	@RequestMapping("/api/categories")
-	public ResponseEntity<APIResponse> getList() {
-		APIResponse apiResponse = new APIResponse();
-		apiResponse.setData(categoryRepository.findAll());
-		return ResponseEntity.status(apiResponse.getStatus()).body(apiResponse);
+	
+	private final CategoryService categoryService;
+	public CategoryController(CategoryService categoryService) {
+		this.categoryService = categoryService;
 	}
 
-	@RequestMapping(path = "/api/category/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<APIResponse> putCategory(@PathVariable("id") long id, @RequestBody CategoryRequestDTO categoryRequestDTO){
-		APIResponse apiResponse = categoryService.putData(categoryRequestDTO, id);
-		return ResponseEntity.status(apiResponse.getStatus()).body(apiResponse);
+	@GetMapping("")
+	public ResponseEntity<List<Category>> getListCategory() {
+		return ResponseEntity.ok(categoryService.getAllCategory());
 	}
 
-	@RequestMapping(path = "/api/category", method = RequestMethod.POST)
-	public ResponseEntity<APIResponse> postCategory(@RequestBody CategoryRequestDTO categoryRequestDTO){
-		APIResponse apiResponse = categoryService.postData(categoryRequestDTO);
-		return ResponseEntity.status(apiResponse.getStatus()).body(apiResponse);
+	@PutMapping(path = "/{id}")
+	public ResponseEntity<?> putCategory(@PathVariable("id") long id, @Valid @RequestBody CategoryRequestDTO categoryRequestDTO){
+		categoryService.updateCategory(categoryRequestDTO, id);
+		return ResponseEntity.noContent().build();
+	}
+
+	@PostMapping("")
+	public ResponseEntity<Category> postCategory(@Valid @RequestBody CategoryRequestDTO categoryRequestDTO){
+		return ResponseEntity.ok(categoryService.createCategory(categoryRequestDTO));
 	}
 	
-	@RequestMapping(path = "/api/category/{id}")
-	public ResponseEntity<APIResponse> deleteCategory(@PathVariable("id") Long id){
-		APIResponse apiResponse = categoryService.deleteData(id);
-		return ResponseEntity.status(apiResponse.getStatus()).body(apiResponse);
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteCategory(@PathVariable("id") Long id){
+		categoryService.deleteCategory(id);
+		return ResponseEntity.noContent().build();
 	}
 }

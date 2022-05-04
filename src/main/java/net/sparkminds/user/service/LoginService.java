@@ -2,6 +2,7 @@ package net.sparkminds.user.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,15 +43,15 @@ public class LoginService {
 	public APIResponse login(LoginRequestDTO loginRequestDTO) {
 		APIResponse apiResponse = new APIResponse();
 		
-		User user  = userRepository.findOneByEmailAndPassword(loginRequestDTO.getEmail(), loginRequestDTO.getPassword());
+		Optional<User> user  = userRepository.findOneByEmailAndPassword(loginRequestDTO.getEmail(), loginRequestDTO.getPassword());
 		
-		if(user==null) {
+		if(user.isEmpty()) {
 			apiResponse.setData("User login failed");
 			return apiResponse;
 		}
 		
 		Map<String, Object> data = new HashMap<>();
-		data.put("accessToken", jwtUtils.generateJwt(user));
+		data.put("accessToken", jwtUtils.generateJwt(user.get()));
 		
 		apiResponse.setData(data);
 		
