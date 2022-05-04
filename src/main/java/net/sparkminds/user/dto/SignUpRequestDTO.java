@@ -1,16 +1,24 @@
 package net.sparkminds.user.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class SignUpRequestDTO {
+	
+	@NotBlank(message = "First name is required")
 	private String firstName;
 
+	@NotBlank(message = "Last name is required")
 	private String lastName;
 
+	@NotBlank(message = "Phone is required")
 	private String phone;
 
 	private String address;
 
+	@NotBlank(message = "Email is required")
 	private String email;
 
+	@NotBlank(message = "Password is required")
 	private String password;
 
 	public String getFirstName() {

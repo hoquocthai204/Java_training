@@ -1,62 +1,52 @@
 package net.sparkminds.user.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import common.APIResponse;
 import net.sparkminds.user.dto.ImageRequestDTO;
 import net.sparkminds.user.entity.Image;
-import net.sparkminds.user.reponsitory.ImageRepository;
 import net.sparkminds.user.service.ImageService;
 
 @RestController
+@RequestMapping("/api/images")
 public class ImageController {
-	
-	@Autowired
-	ImageService imageService;
-	
-	@Autowired
-	ImageRepository imageRepository;
 
-	@RequestMapping("/api/images")
-	public ResponseEntity<APIResponse> getList(){
-		APIResponse apiResponse = new APIResponse();
-		apiResponse.setData(imageRepository.findAll());
-		return ResponseEntity.status(apiResponse.getStatus()).body(apiResponse);
+	private final ImageService imageService;
+
+	public ImageController(ImageService imageService) {
+		this.imageService = imageService;
 	}
-	
-	@RequestMapping(path = "/api/image",method = RequestMethod.POST)
-	public ResponseEntity<APIResponse> portImage(@RequestBody ImageRequestDTO imageRequestDTO){
-		
-		APIResponse apiResponse = new APIResponse();
-		
-		Image image = new Image();
-		
-		image.setTitle(imageRequestDTO.getTitle());
-		image.setDescription(imageRequestDTO.getDescription());
-		image.setUrlImage(imageRequestDTO.getUrlImage());
-		image.setCategory(imageRequestDTO.getCategory());
-		
-		apiResponse.setData(imageRepository.save(image));
-		
-		
-		return ResponseEntity.status(apiResponse.getStatus()).body(apiResponse);
+
+	@GetMapping
+	public ResponseEntity<List<Image>> getListImage() {
+		return ResponseEntity.ok(imageService.getListImage());
 	}
-	
-	@RequestMapping(path = "/api/image/{id}",method = RequestMethod.PUT)
-	public ResponseEntity<APIResponse> putImage(@PathVariable("id") long id, @RequestBody ImageRequestDTO imageRequestDTO){
-		APIResponse apiResponse = imageService.putData(imageRequestDTO,id);
-		return ResponseEntity.status(apiResponse.getStatus()).body(apiResponse);
+
+	@PostMapping
+	public ResponseEntity<Image> portImage(@Valid @RequestBody ImageRequestDTO imageRequestDTO) {
+		return ResponseEntity.ok(imageService.postImage(imageRequestDTO));
 	}
-	
-	@RequestMapping(path = "/api/image/{id}",method = RequestMethod.DELETE)
-	public ResponseEntity<APIResponse> deleteImage(@PathVariable("id") long id){
-		APIResponse apiResponse = imageService.deleteData(id);
-		return ResponseEntity.status(apiResponse.getStatus()).body(apiResponse);
+
+	@PutMapping("/{id}")
+	public ResponseEntity<?> putImage(@PathVariable("id") long id, @Valid @RequestBody ImageRequestDTO imageRequestDTO) {
+		imageService.putImage(imageRequestDTO, id);
+		return ResponseEntity.noContent().build();
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteImage(@PathVariable("id") long id) {
+		imageService.deleteImage(id);
+		return ResponseEntity.noContent().build();
 	}
 }

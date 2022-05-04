@@ -23,11 +23,12 @@ import net.sparkminds.user.service.CategoryService;
 public class CategoryController {
 	
 	private final CategoryService categoryService;
+	
 	public CategoryController(CategoryService categoryService) {
 		this.categoryService = categoryService;
 	}
 
-	@GetMapping("")
+	@GetMapping
 	public ResponseEntity<List<Category>> getListCategory() {
 		return ResponseEntity.ok(categoryService.getAllCategory());
 	}
@@ -38,7 +39,7 @@ public class CategoryController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@PostMapping("")
+	@PostMapping
 	public ResponseEntity<Category> postCategory(@Valid @RequestBody CategoryRequestDTO categoryRequestDTO){
 		return ResponseEntity.ok(categoryService.createCategory(categoryRequestDTO));
 	}

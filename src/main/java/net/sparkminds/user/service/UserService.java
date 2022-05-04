@@ -1,20 +1,15 @@
 package net.sparkminds.user.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Map;
 
-import common.APIResponse;
-import net.sparkminds.user.reponsitory.UserRepository;
+import net.sparkminds.user.dto.LoginRequestDTO;
+import net.sparkminds.user.dto.SignUpRequestDTO;
+import net.sparkminds.user.entity.User;
 
-@Service
-public class UserService {
-	@Autowired
-	UserRepository userRepository;
+public interface UserService {
 
-	public APIResponse getUser() {
-		APIResponse apiResponse = new APIResponse();
-		apiResponse.setData(userRepository.findAll());
-		return apiResponse;
-	}
-	
+	List<User> getListUser();
+	User signup(SignUpRequestDTO signUpRequestDTO);
+	Map<String, Object> login(LoginRequestDTO loginRequestDTO);
 }

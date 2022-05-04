@@ -10,8 +10,10 @@ import javax.persistence.Table;
 @Table(name = "image")
 public class Image extends Base {
 
+	@Column(name = "title")
 	private String title;
 
+	@Column(name = "description")
 	private String description;
 	
 	@Column(name = "urlImage")
@@ -53,7 +55,4 @@ public class Image extends Base {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-	
-	
-
 }

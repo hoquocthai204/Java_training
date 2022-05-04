@@ -1,12 +1,19 @@
 package net.sparkminds.user.dto;
 
 
+import javax.validation.constraints.NotBlank;
+
 import net.sparkminds.user.entity.Category;
 
 public class ImageRequestDTO {
+	
+	@NotBlank(message = "Title Image is required")
 	private String title;
+	
 	private String description;
+	
 	private String urlImage;
+	
 	private Category category;
 	
 	

@@ -9,17 +9,15 @@ import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import lombok.Data;
 import net.sparkminds.user.entity.enumeration.CategoryStatus;
 
 @Entity
 @Table(name = "category")
-@Data
 public class Category extends Base {
 
 	@Column(unique = true)
 	private String name;
-	
+
 	@Column(name = "description")
 	private String description;
 	
